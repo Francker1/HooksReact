@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+
+    --fsz-principal: 24px;
+}
+
+body{
+
+    font-size: var(--fsz-principal);
+}
