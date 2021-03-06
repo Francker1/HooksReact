@@ -3,11 +3,10 @@
 @tailwind utilities;
 
 :root{
-
     --fsz-principal: 24px;
 }
 
 body{
-
     font-size: var(--fsz-principal);
+    padding: 70px;
 }
