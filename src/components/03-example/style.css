@@ -1,0 +1,9 @@
+.logo__container{
+    position: absolute;
+    bottom: 0;
+}
+
+.logo{
+    height: auto;
+    width: 250px;
+}
