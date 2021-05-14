@@ -1,0 +1,13 @@
+
+.list-group-item{
+    display: flex;
+    justify-content: space-between;
+}
+
+.content-todo{
+    cursor: pointer;
+}
+
+.complete{
+    text-decoration: line-through;
+}
