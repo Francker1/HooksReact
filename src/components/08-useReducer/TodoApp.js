@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { todoReducer } from './todoReducer';
 import { useForm } from '../../hooks/useForm';
 
@@ -6,11 +6,13 @@ import './style.css';
 
 const init = () => {
 
-    return [{
-        id: new Date().getTime(),
-        desc: 'Aprender React',
-        done: false,
-    }];
+    return JSON.parse( localStorage.getItem("todos")) || [] ;
+
+    // return [{
+    //     id: new Date().getTime(),
+    //     desc: 'Aprender React',
+    //     done: false,
+    // }];
 }
 
 export const TodoApp = () => {
@@ -19,9 +21,30 @@ export const TodoApp = () => {
 
     const [ {description}, handleInputChange, reset ] = useForm({
         description: "",
-    })
+    });
 
-    console.log(description);
+    useEffect( () => {
+
+        localStorage.setItem('todos', JSON.stringify(todos))
+    }, [todos]);
+
+    const handleDelete = (todoId) => {
+
+        const action = {
+            type: 'delete',
+            payload: todoId,
+        };
+
+        dispatch(action);
+    }
+
+    const handleToggle = (todoId) => {
+
+        dispatch({
+            type: 'toggle',
+            payload: todoId,
+        })
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -30,7 +53,7 @@ export const TodoApp = () => {
             return;
         }
 
-        const newTodo = { 
+        const newTodo = {
             id: new Date().getTime(),
             desc: description,
             done: false,
@@ -51,42 +74,45 @@ export const TodoApp = () => {
         <hr />
 
         <div className="row">
-            <div className="col-7">
-                <ul className="list-group list-group-flush">
-                {todos.map((todo, i) => (
-                    <li key={todo.id} className="list-group-item">
-                        <p className="content-todo mr-5">
-                            {i + 1}. {todo.desc}
-                        </p>
-                        <button className="btn btn-danger">Borrar</button>
-                    </li>
-                ))}
-                </ul>
-            </div>
-
-            <div className="col-5">
-              Agregar TODO
-              <hr />
-
-              <form onSubmit={handleSubmit}>
-                  <input 
-                    type="text"
-                    name="description"
-                    placeholder="Agregar tarea"
-                    autoComplete="off"
-                    value={description || ""}
-                    onChange={handleInputChange}
-                  />
-
-                  <button 
-                    type="submit"
-                    className="btn"
+          <div className="col-7">
+            <ul className="list-group list-group-flush">
+              {todos.map((todo, i) => (
+                <li key={todo.id} className="list-group-item">
+                  <p 
+                    className={`content-todo ${ todo.done && 'complete'} | mr-5`}
+                    onClick={() => handleToggle(todo.id)}
                     >
-                      Guardar
+                    {i + 1}. {todo.desc}
+                  </p>
+                  <button
+                    className="btn btn-danger"
+                    onClick={ () => handleDelete(todo.id) }
+                  >
+                    Borrar
                   </button>
-              </form>
-            </div>
+                </li>
+              ))}
+            </ul>
+          </div>
 
+          <div className="col-5">
+            Agregar TODO
+            <hr />
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="description"
+                placeholder="Agregar tarea"
+                autoComplete="off"
+                value={description || ""}
+                onChange={handleInputChange}
+              />
+
+              <button type="submit" className="btn">
+                Guardar
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     );
