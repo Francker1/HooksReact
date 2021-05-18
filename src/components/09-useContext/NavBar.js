@@ -5,7 +5,7 @@ import { Link, NavLink } from "react-router-dom";
 export const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <Link exact to="/" className="navbar-brand">
+      <Link exact='true' to="/" className="navbar-brand">
         useContext
       </Link>
       <div className="collapse navbar-collapse" id="navbarNav">
